@@ -7,6 +7,8 @@ namespace MauiAppTempoAgora.Services
     {
        public static async Task<Tempo?> GetPrevisao(string cidade)
         {
+
+
             Tempo? t = null;
 
             string chave = "6135072afe7f6cec1537d5cb08a5a1a2";
@@ -17,6 +19,14 @@ namespace MauiAppTempoAgora.Services
             using (HttpClient client = new HttpClient())
             {
                 HttpResponseMessage resp = await client.GetAsync(url);
+
+                // 3.Verifica o código de status da resposta HTTP.
+                //Se for 404 (NotFound), significa que a cidade não foi encontrada na API,
+                // então retornamos null para que a interface exiba a mensagem ao usuário.
+                if (resp.StatusCode == System.Net.HttpStatusCode.NotFound)
+                {
+                    return null;
+                }
 
                 if (resp.IsSuccessStatusCode)
                 {
